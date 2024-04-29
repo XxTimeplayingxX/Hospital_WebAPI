@@ -8,5 +8,6 @@
         public string cedula { get; set; }
         public string telefono { get; set; }
         public string correo { get; set; }
+        public bool estado { get; set; }
     }
 }

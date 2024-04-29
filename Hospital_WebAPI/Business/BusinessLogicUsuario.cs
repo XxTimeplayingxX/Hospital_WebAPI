@@ -110,11 +110,13 @@ namespace Hospital_WebAPI.Business
             return response;
 
         }
-        public async Task<Response> LlamarAMappingPostUsuario(string usernme, string password)
+        public async Task<Response> LlamarAMappingPostUsuario(string username, string password,
+            string nombre, string apellido, string cedula, string telefono, string correo)
         {
             try
             {
-                response = await usuarioMapping.PostUsuarioMapping(usernme, password);
+                response = await usuarioMapping.PostUsuarioMapping(username, password,
+                    nombre, apellido, cedula, telefono, correo);
                 response.data = null;
             }
             catch (Exception ex)

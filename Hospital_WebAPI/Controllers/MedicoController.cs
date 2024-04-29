@@ -80,7 +80,7 @@ namespace Hospital_WebAPI.Controllers
         {
             try
             {
-                response = await businessLogicMedico.LlamarAMappingUpdateMedico(cedula, nombre, apellido, telefono, correo, espcialidad, cargo);
+                response = await businessLogicMedico.LlamarAMappingUpdateMedico(cedula, nombre, apellido, telefono, correo,  espcialidad, cargo);
             }
             catch (Exception ex)
             {
@@ -94,10 +94,24 @@ namespace Hospital_WebAPI.Controllers
             return Ok(response);
         }
 
-        // DELETE api/<MedicoController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
+        //DELETE api/<MedicoController>/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string cedula)
+        {
+            try
+            {
+                response = await businessLogicMedico.LlamarAMappingDeleteMedico(cedula);
+            }
+            catch(Exception ex)
+            {
+                response = new Response()
+                {
+                    code = ResponseType.Error,
+                    message = ex.Message,
+                    data = ex.InnerException
+                };
+            }
+            return Ok(response);
+        }
     }
 }

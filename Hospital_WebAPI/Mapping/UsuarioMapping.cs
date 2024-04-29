@@ -115,9 +115,8 @@ namespace Hospital_WebAPI.Mapping
             connection = (SqlConnection)response.data;
             try
             {
-                SqlCommand command = new("PutUsuario", connection);//Para esto debo de hacer un stored Procedure en sql
+                SqlCommand command = new("InsertarUsuario", connection);//Para esto debo de hacer un stored Procedure en sql
 
-                command.Parameters.Add(new SqlParameter("@idUsuario", SqlDbType.Int)).Value = idUsuario;
                 command.Parameters.Add(new SqlParameter("@username", SqlDbType.VarChar,50)).Value = username;
                 command.Parameters.Add(new SqlParameter("@password", SqlDbType.VarChar, 50)).Value = password;
 
@@ -144,7 +143,8 @@ namespace Hospital_WebAPI.Mapping
             }
             return response;
         }
-        public async Task<Response> PostUsuarioMapping(string username, string password)
+        public async Task<Response> PostUsuarioMapping(string username, string password,
+            string nombre, string apellido, string cedula, string telefono, string correo)
         {
             //Conexión con base de Datos
             HospitalDb hospitalDb = new HospitalDb();
@@ -161,10 +161,15 @@ namespace Hospital_WebAPI.Mapping
             connection = (SqlConnection)response.data;
             try
             {
-                SqlCommand command = new("PostUsuario", connection);//Para esto debo de hacer un stored Procedure en sql
+                SqlCommand command = new("InsertarUsuario", connection);//Para esto debo de hacer un stored Procedure en sql
 
                 command.Parameters.Add(new SqlParameter("@userName", SqlDbType.VarChar,50)).Value = username;
                 command.Parameters.Add(new SqlParameter("@passWord", SqlDbType.VarChar,50)).Value = password;
+                command.Parameters.Add(new SqlParameter("@nombre", SqlDbType.VarChar, 50)).Value = nombre;
+                command.Parameters.Add(new SqlParameter("@apellido", SqlDbType.VarChar, 50)).Value = apellido;
+                command.Parameters.Add(new SqlParameter("@cedula", SqlDbType.VarChar, 10)).Value = cedula;
+                command.Parameters.Add(new SqlParameter("@telefono", SqlDbType.VarChar, 50)).Value = telefono;
+                command.Parameters.Add(new SqlParameter("@correo", SqlDbType.VarChar, 50)).Value = correo;
 
                 command.CommandType = CommandType.StoredProcedure;
                 SqlDataAdapter dataAdapter = new(command);

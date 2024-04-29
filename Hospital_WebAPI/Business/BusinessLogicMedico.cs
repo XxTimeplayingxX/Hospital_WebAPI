@@ -26,6 +26,7 @@ namespace Hospital_WebAPI.Business
                         medico.cedula = rows["cedula"].ToString();
                         medico.telefono = rows["telefono"].ToString();
                         medico.correo = rows["correo"].ToString();
+                        medico.estado = bool.Parse(rows["estado"].ToString());
                         medico.especialidad = rows["especialidad"].ToString();
                         medico.cargo = rows["cargo"].ToString();
                         medicoList.Add(medico);
@@ -74,6 +75,7 @@ namespace Hospital_WebAPI.Business
                             medico.cedula = rows["cedula"].ToString();
                             medico.telefono = rows["telefono"].ToString();
                             medico.correo = rows["correo"].ToString();
+                            medico.estado = bool.Parse(rows["estado"].ToString());
                             medico.especialidad = rows["especialidad"].ToString();
                             medico.cargo = rows["cargo"].ToString();
                         }
@@ -114,7 +116,7 @@ namespace Hospital_WebAPI.Business
             return response;
 
         }
-        public async Task<Response> LlamarAMappingAddMedico(string cedula, string nombre, string apellido, string telefono, string correo, string especialidad, string cargo)
+        public async Task<Response> LlamarAMappingAddMedico(string cedula, string nombre, string apellido, string telefono, string correo,string especialidad, string cargo)
         {
             try
             {
@@ -134,5 +136,26 @@ namespace Hospital_WebAPI.Business
             return response;
 
         }
+        public async Task<Response> LlamarAMappingDeleteMedico(string cedula)
+        {
+            try
+            {
+                response = await medicoMapping.DeleteMedicoIDMapping(cedula);
+                response.data = null;
+            }
+            catch (Exception ex)
+            {
+                response = new Response()
+                {
+                    code = ResponseType.Error,
+                    message = ex.Message,
+                    data = ex.InnerException
+                };
+            }
+
+            return response;
+
+        }
+
     }
 }

@@ -56,34 +56,14 @@ namespace Hospital_WebAPI.Controllers
             }
             return Ok(response);
         }
-
-        //[HttpGet("{usuario}")]
-        //public async Task<IActionResult> LoginUsuario(string usuario, string contraseña)
-        //{
-        //    try
-        //    {
-        //        response = await businessLogicUsuario.LlamarAMappingLoginUsuario(usuario, contraseña);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        response = new Response()
-        //        {
-        //            code = ResponseType.Error,
-        //            message = ex.Message,
-        //            data = ex.InnerException
-        //        };
-        //    }
-        //    return Ok(response);
-        //}
-
-        //// POST api/<UserController>
-        ////Add new Usuario
         [HttpPost]
-        public async Task<IActionResult> Post(string username, string password)
+        public async Task<IActionResult> Post(string username, string password,
+            string nombre, string apellido, string cedula, string telefono, string correo)
         {
             try
             {
-                response = await businessLogicUsuario.LlamarAMappingPostUsuario(username, password);
+                response = await businessLogicUsuario.LlamarAMappingPostUsuario(username, password
+                    ,nombre, apellido, cedula, telefono, correo);
             }
             catch (Exception ex) 
             {

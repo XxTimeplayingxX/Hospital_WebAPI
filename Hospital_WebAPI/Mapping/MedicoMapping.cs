@@ -200,6 +200,51 @@ namespace Hospital_WebAPI.Mapping
             }
             return response;
         }
+        public async Task<Response> DeleteMedicoIDMapping(string cedulaMedico)
+        {
+            //Conexión con la base de datos
+            HospitalDb hospitalDb = new HospitalDb();
+            DataSet dataSet = new();
+            SqlConnection connection = null;
+            //Respuesta
+            Response response = null;
+            response = hospitalDb.DatabaseConnection();
+
+            if (response.code == ResponseType.Error)
+            {
+                return response;
+            }
+            connection = (SqlConnection)response.data;
+            try
+            {
+                SqlCommand command = new("LogicDelete", connection);
+
+                command.Parameters.Add(new SqlParameter("@cedula", SqlDbType.VarChar, 10)).Value = cedulaMedico;
+
+                command.CommandType = CommandType.StoredProcedure;
+                SqlDataAdapter dataAdapter = new(command);
+
+                dataAdapter.Fill(dataSet);
+                response = new Response()
+                {
+                    code = ResponseType.Success,
+                    message = "Respuesta exitosa",
+                    data = dataSet
+                };
+            }
+            catch (Exception ex)
+            {
+                response = new Response() { code = ResponseType.Error, message = ex.Message, data = ex.InnerException };
+            }
+            finally
+            {
+                if (connection.State > 0)//Significa que esta abierta la conexión con la base de datos
+                {
+                    await connection.CloseAsync();
+                }
+            }
+            return response;
+        }
 
     }
 }
