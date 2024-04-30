@@ -95,14 +95,24 @@ namespace Hospital_WebAPI.Controllers
             return Ok(response);
         }
 
-        //// DELETE api/<PacienteController>/5
-        //[HttpDelete("{id}")]
-        //public IActionResult Delete(int id)
-        //{
-        //    var paciente = _paciente.Find(paciente => paciente.id_Paciente == id);
-        //    _paciente.Remove(paciente);
-
-        //    return Ok();
-        //}
+        // DELETE api/<PacienteController>/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string cedula)
+        {
+            try
+            {
+                response = await BusinessLogicPaciente.LlamarAMappingDeletePacienteMapping(cedula);
+            }
+            catch (Exception ex)
+            {
+                response = new Response()
+                {
+                    code = ResponseType.Error,
+                    message = ex.Message,
+                    data = ex.InnerException
+                };
+            }
+            return Ok(response);
+        }
     }
 }

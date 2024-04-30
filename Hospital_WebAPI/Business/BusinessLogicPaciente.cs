@@ -28,7 +28,9 @@ namespace Hospital_WebAPI.Business
                         _paciente.apellido = rows["apellido"].ToString();
                         _paciente.cedula = rows["cedula"].ToString();
                         _paciente.telefono = rows["telefono"].ToString();
+                        _paciente.correo = rows["correo"].ToString();
                         _paciente.numero_historial = rows["numero_historial"].ToString();
+                        _paciente.estado = bool.Parse(rows["estado"].ToString());
                         pacienteList.Add(_paciente);
                     }
                 }
@@ -76,6 +78,7 @@ namespace Hospital_WebAPI.Business
                             _paciente.telefono = rows["telefono"].ToString();
                             _paciente.correo = rows["correo"].ToString();
                             _paciente.numero_historial = rows["numero_historial"].ToString();
+                            _paciente.estado = bool.Parse(rows["estado"].ToString());
                         }
                     }
                 }
@@ -119,6 +122,26 @@ namespace Hospital_WebAPI.Business
             try
             {
                 response = await pacienteMapping.UpdateUsuarioMapping(cedula, nombre, apellido, telefono, correo, numHistorial);
+                response.data = null;
+            }
+            catch (Exception ex)
+            {
+                response = new Response()
+                {
+                    code = ResponseType.Error,
+                    message = ex.Message,
+                    data = ex.InnerException
+                };
+            }
+
+            return response;
+        }
+
+        public async Task<Response> LlamarAMappingDeletePacienteMapping(string cedula)
+        {
+            try
+            {
+                response = await pacienteMapping.DeletePacienteMapping(cedula);
                 response.data = null;
             }
             catch (Exception ex)

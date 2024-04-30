@@ -196,6 +196,50 @@ namespace Hospital_WebAPI.Mapping
             }
             return response;
         }
+        public async Task<Response> DeletePacienteMapping(string cedula)
+        {
+            //Conexión con base de Datos
+            HospitalDb hospitalDb = new HospitalDb();
+            DataSet dataSetUsuario = new();
+            SqlConnection connection = null;
+            //Response
+            Response response = null;
+            response = hospitalDb.DatabaseConnection();
+
+            if (response.code == ResponseType.Error)
+            {
+                return response;
+            }
+            connection = (SqlConnection)response.data;
+            try
+            {
+                SqlCommand command = new("LogicDeletePaciente", connection);//Para esto debo de hacer un stored Procedure en sql
+
+                command.Parameters.Add(new SqlParameter("@cedula", SqlDbType.VarChar, 10)).Value = cedula;
+
+                command.CommandType = CommandType.StoredProcedure;
+                SqlDataAdapter dataAdapter = new(command);
+                int result = await command.ExecuteNonQueryAsync();
+                response = new Response()
+                {
+                    code = ResponseType.Success,
+                    message = "Respuesta exitosa",
+                    data = null
+                };
+            }
+            catch (Exception ex)
+            {
+                response = new Response() { code = ResponseType.Error, message = ex.Message, data = ex.InnerException };
+            }
+            finally
+            {
+                if (connection.State > 0)//Significa que esta abierta la conexión con la base de datos
+                {
+                    await connection.CloseAsync();
+                }
+            }
+            return response;
+        }
 
 
 
